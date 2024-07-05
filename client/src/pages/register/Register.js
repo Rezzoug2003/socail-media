@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./register.scss";
 import { Link } from "react-router-dom";
+import axios from "axios";
 export const Register = () => {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    
+  })
+  const [err, seterr] = useState(null);
+  const handlechange = (e) => {
+    setUser((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    })
+  }
+  const handleclick = async(e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8800/api/auth/register", user)
+    } catch (err) {
+      seterr(err.response.data);
+    }
+
+  }
+  console.log(err)
   return (
     <div className="register">
       <div className="card">
@@ -20,11 +44,32 @@ export const Register = () => {
         <div className="right">
           <h1>Register</h1>
           <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              onChange={handlechange}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              onChange={handlechange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handlechange}
+            />
+            <input
+              type="text"
+              placeholder="Name"
+              name="name"
+              onChange={handlechange}
+            />
+            {err&&err}
+            <button onClick={handleclick}>Register</button>
           </form>
         </div>
       </div>

@@ -16,24 +16,29 @@ import { Profile } from "./pages/profile/Profile";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darModeContext";
 import { AuthContext } from "./context/authContext";
+import { QueryClient, QueryClientProvider} from "react-query";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser)
- const { darkMode } = useContext(DarkModeContext); 
+  const queryClient = new QueryClient();
+  
+  const { darkMode } = useContext(DarkModeContext); 
+  
   const Layout = () => {
     return (
-      <div className={`theme-${darkMode ? "dark" : "light"}`}>
-        <NavBor />
-        <div style={{ display: "flex" }}>
-          <LeftBar />
-          <div style={{ flex: 6 }}>
-            <Outlet />
-          </div>
+      <QueryClientProvider client={queryClient}>
+        <div className={`theme-${darkMode ? "dark" : "light"}`}>
+          <NavBor />
+          <div style={{ display: "flex" }}>
+            <LeftBar />
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
 
-          <RightBar />
+            <RightBar />
+          </div>
         </div>
-      </div>
+      </QueryClientProvider>
     );
   };
   const ProtectedRoute = ({ children }) => {
@@ -48,13 +53,13 @@ function App() {
       path: "/",
       element: (
         <ProtectedRoute>
-          <Layout />
+          <Layout/>
         </ProtectedRoute>
       ),
       children: [
         {
           path: "/",
-          element: <Home />,
+          element: <Home/>,
         },
         {
           path: "/profile/:id",
@@ -71,9 +76,12 @@ function App() {
       element: <Register />,
     },
   ]);
+
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      
+        <RouterProvider router={router} />
+     
     </div>
   );
 }

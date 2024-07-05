@@ -7,7 +7,7 @@
         height: 250px;
         margin-bottom: 30px;
         @include mobile {
-                height: 50px;
+                heighst: 50px;
                 margin-bottom: 0;
                 justify-content: space-between;
             }
@@ -59,6 +59,22 @@
                     margin: auto;
                 }
 
+        }
+        .file{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            .icon{
+                color:lightgray;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                
+
+            }
         }
     }
 }
